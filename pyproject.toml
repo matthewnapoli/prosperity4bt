@@ -1,0 +1,16 @@
+[project]
+name = "prosperity4bt"
+version = "0.0.1"
+requires-python = ">=3.10"
+
+[project.scripts]
+prosperity4bt = "prosperity4bt.main:main"
+
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["prosperity4bt*"]
+exclude = ["ProspEnv*", "build*", "dist*", "*.egg-info*"]
