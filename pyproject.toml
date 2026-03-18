@@ -1,7 +1,19 @@
 [project]
 name = "prosperity4bt"
 version = "0.0.1"
+description = "Backtester for IMC Prosperity 4 algorithms"
+readme = "README.md"
 requires-python = ">=3.10"
+
+authors = [{name = "Matthew Napoli"}]
+
+dependencies = [
+    "ipython>=8.18.1",
+    "jsonpickle>=4.0.2",
+    "orjson>=3.10.15",
+    "tqdm>=4.67.1",
+    "typer>=0.15.2",
+]
 
 [project.scripts]
 prosperity4bt = "prosperity4bt.main:main"
@@ -11,6 +23,5 @@ requires = ["setuptools>=61"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools.packages.find]
-where = ["."]
+where = ["src"]
 include = ["prosperity4bt*"]
-exclude = ["ProspEnv*", "build*", "dist*", "*.egg-info*"]
