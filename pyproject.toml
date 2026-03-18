@@ -27,4 +27,4 @@ where = ["src"]
 include = ["prosperity4bt*"]
 
 [tool.setuptools.package-data]
-prosperity3bt = ["resources/*/*.csv"]
+prosperity4bt = ["resources/*/*.csv"]
