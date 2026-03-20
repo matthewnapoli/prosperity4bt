@@ -9,4 +9,4 @@ Originally created by jmerle - Jasper van Merle - for Prosperity 3:
 
 Updated for Prosperity 4.
 
-NOTE: STANDARD 
+NOTE: STANDARD FLAG IS NOW `--match-trades worse`
