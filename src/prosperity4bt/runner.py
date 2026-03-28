@@ -376,5 +376,4 @@ def run_backtest(
         create_activity_logs(state, data, result)
         enforce_limits(state, data, orders, sandbox_row)
         match_orders(state, data, orders, result, trade_matching_mode)
-
     return result

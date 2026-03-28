@@ -1,3 +1,4 @@
+import math
 import sys
 from collections import defaultdict
 from datetime import datetime
@@ -142,25 +143,43 @@ def write_output(output_file: Path, merged_results: BacktestResult) -> None:
         file.write(",\n".join(map(str, merged_results.trades)))
         file.write("]")
 
+def extract_total_pnl_series(result):
+    by_ts = {}
+    for row in result.activity_logs:
+        by_ts.setdefault(row.timestamp, 0.0)
+        by_ts[row.timestamp] += float(row.columns[-1])
+    return [by_ts[t] for t in sorted(by_ts)]
+
+def sharpe_like(result):
+    p = extract_total_pnl_series(result)
+    r = [p[i] - p[i-1] for i in range(1, len(p))]
+    m = sum(r)/len(r)
+    s = math.sqrt(sum((x-m)**2 for x in r)/len(r))
+    return m/s
 
 def print_overall_summary(results: list[BacktestResult]) -> None:
     print("Profit summary:")
 
     total_profit = 0
+    all_returns = []
+
     for result in results:
-        last_timestamp = result.activity_logs[-1].timestamp
+        p = extract_total_pnl_series(result)
+        r = [p[i] - p[i-1] for i in range(1, len(p))]
 
-        profit = 0
-        for row in reversed(result.activity_logs):
-            if row.timestamp != last_timestamp:
-                break
+        profit = p[-1]
+        sharpe = sharpe_like(result)
 
-            profit += row.columns[-1]
+        print(f"Round {result.round_num} day {result.day_num}: {profit:,.0f} | Sharpe-Like: {sharpe*100:.4f}")
 
-        print(f"Round {result.round_num} day {result.day_num}: {profit:,.0f}")
         total_profit += profit
+        all_returns.extend(r)
 
-    print(f"Total profit: {total_profit:,.0f}")
+    mean = sum(all_returns) / len(all_returns)
+    std = (sum((x - mean) ** 2 for x in all_returns) / len(all_returns)) ** 0.5
+    total_sharpe = mean / std
+
+    print(f"Total profit: {total_profit:,.0f}  | Total Sharpe-Like: {total_sharpe*100:.4f}")
 
 
 def format_path(path: Path) -> str:
