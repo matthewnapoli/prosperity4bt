@@ -177,7 +177,7 @@ def print_overall_summary(results: list[BacktestResult]) -> None:
 
     mean = sum(all_returns) / len(all_returns)
     std = (sum((x - mean) ** 2 for x in all_returns) / len(all_returns)) ** 0.5
-    total_sharpe = mean / std
+    total_sharpe = mean / std*100
 
     print(f"Total profit: {total_profit:,.0f}  | Total Sharpe-Like: {total_sharpe:.4f}")
 
