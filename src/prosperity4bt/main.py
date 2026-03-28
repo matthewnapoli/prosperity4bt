@@ -155,7 +155,7 @@ def sharpe_like(result):
     r = [p[i] - p[i-1] for i in range(1, len(p))]
     m = sum(r)/len(r)
     s = math.sqrt(sum((x-m)**2 for x in r)/len(r))
-    return m/s
+    return m/s * 100
 
 def print_overall_summary(results: list[BacktestResult]) -> None:
     print("Profit summary:")
@@ -170,7 +170,7 @@ def print_overall_summary(results: list[BacktestResult]) -> None:
         profit = p[-1]
         sharpe = sharpe_like(result)
 
-        print(f"Round {result.round_num} day {result.day_num}: {profit:,.0f} | Sharpe-Like: {sharpe*100:.4f}")
+        print(f"Round {result.round_num} day {result.day_num}: {profit:,.0f} | Sharpe-Like: {sharpe:.4f}")
 
         total_profit += profit
         all_returns.extend(r)
@@ -179,7 +179,7 @@ def print_overall_summary(results: list[BacktestResult]) -> None:
     std = (sum((x - mean) ** 2 for x in all_returns) / len(all_returns)) ** 0.5
     total_sharpe = mean / std
 
-    print(f"Total profit: {total_profit:,.0f}  | Total Sharpe-Like: {total_sharpe*100:.4f}")
+    print(f"Total profit: {total_profit:,.0f}  | Total Sharpe-Like: {total_sharpe:.4f}")
 
 
 def format_path(path: Path) -> str:
